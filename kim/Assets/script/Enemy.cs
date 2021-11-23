@@ -6,7 +6,8 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class Enemy : LivingEntity
 {
-    public enum State{Idle, chasing, Attacking};
+    public enum State { Idle, chasing, Attacking };
+    public bool isChasing = false;
     State currentState;
 
     NavMeshAgent pathfinder;
@@ -33,17 +34,18 @@ public class Enemy : LivingEntity
         skinMaterial = GetComponent<Renderer>().material;
         originColor = skinMaterial.color;
 
-        if(GameObject.FindGameObjectsWithTag("Player")!=null)
+        if(GameObject.FindGameObjectWithTag("Player") != null)
         {
-            currentState = State.chasing;
-            hasTarget = true;
             target = GameObject.FindGameObjectWithTag("Player").transform;
             targetEntity = target.GetComponent<LivingEntity>();
             targetEntity.OnDeath += OnTargetDeath;
-
-
         }
 
+        if (isChasing)
+        {
+            hasTarget = true;
+            currentState = State.chasing;
+        }
 
 
         myCollisionRadius = GetComponent<CapsuleCollider>().radius;
@@ -60,7 +62,7 @@ public class Enemy : LivingEntity
 
     void Update()
     {
-        if(hasTarget)
+        if (hasTarget)
         {
             if (Time.time > nextAttackTIme)
             {
@@ -74,6 +76,17 @@ public class Enemy : LivingEntity
 
             }
 
+        }
+        if (!isChasing)
+        {
+            hasTarget = false;
+            currentState = State.Idle;
+        }
+        else
+        {
+            hasTarget = true;
+            currentState = State.chasing;
+            StartCoroutine(UpdatePath());
         }
     }
     IEnumerator Attack()
@@ -92,9 +105,9 @@ public class Enemy : LivingEntity
         bool hasAppliedDamage = false;
 
 
-        while(percent <= 1)
+        while (percent <= 1)
         {
-            if(percent >= 0.5f && !hasAppliedDamage)
+            if (percent >= 0.5f && !hasAppliedDamage)
             {
                 hasAppliedDamage = true;
                 targetEntity.TakeDamage(damage);
@@ -110,14 +123,14 @@ public class Enemy : LivingEntity
         pathfinder.enabled = true;
     }
 
-    
+
     IEnumerator UpdatePath()
     {
         float refreshRate = 0.25f;
 
         while (hasTarget)
         {
-            if(currentState == State.chasing)
+            if (currentState == State.chasing)
             {
                 Vector3 dirToTarget = (target.position - transform.position).normalized;
                 Vector3 targetPosition = target.position - dirToTarget * (myCollisionRadius + targetCollisionRadius + attackDistanceThreshold / 2);
@@ -131,7 +144,7 @@ public class Enemy : LivingEntity
             yield return new WaitForSeconds(refreshRate);
         }
     }
-    
+
 
     // Update is called once per frame
 

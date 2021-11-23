@@ -15,6 +15,7 @@ public class Gun : MonoBehaviour
     {
         if(Time.time > nextShotTime)
         {
+            GetComponent<AudioSource>().Play();
             nextShotTime = Time.time + msBetweenShots / 500;
             Projectile newProjectile = Instantiate(projectile, muzzle.position, muzzle.rotation);
             newProjectile.SetSpeed(muzzleVelocity);

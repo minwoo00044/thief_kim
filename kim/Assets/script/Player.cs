@@ -7,6 +7,7 @@ using UnityEngine;
 [RequireComponent(typeof(GunController))]
 public class Player : LivingEntity
 {
+    Animator anim;
     public float speed = 5;
     Camera viewCamera;
     GunController gunController;
@@ -18,11 +19,24 @@ public class Player : LivingEntity
         controller = GetComponent<PlayerController>();
         viewCamera = Camera.main;
         gunController = GetComponent<GunController>();
+        anim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
+
+
+        if ((Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.W)))
+        {
+            anim.SetBool("Walk", true);
+
+        }
+        else if ((Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.S) || Input.GetKeyUp(KeyCode.D) || Input.GetKeyUp(KeyCode.W)))
+        {
+
+            anim.SetBool("Walk", false);
+        }
         Vector3 moveinput = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
         Vector3 moveVelocity = moveinput.normalized * speed;
         controller.Move(moveVelocity);

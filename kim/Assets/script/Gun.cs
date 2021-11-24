@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Gun : MonoBehaviour
 {
@@ -11,10 +12,11 @@ public class Gun : MonoBehaviour
 
     float nextShotTime;
 
-    public void Shoot()
+    public void Shoot(Text txt)
     {
-        if(Time.time > nextShotTime)
+        if(Time.time > nextShotTime && txt.GetComponent<BulletText>().n>0)
         {
+            txt.GetComponent<BulletText>().n -= 1;
             GetComponent<AudioSource>().Play();
             nextShotTime = Time.time + msBetweenShots / 500;
             Projectile newProjectile = Instantiate(projectile, muzzle.position, muzzle.rotation);

@@ -25,17 +25,20 @@ public class Player : LivingEntity
     // Update is called once per frame
     void Update()
     {
-
+        if ((Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.W)))
+        {
+            GetComponent<AudioSource>().Play();
+        }
 
         if ((Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.W)))
         {
             anim.SetBool("Walk", true);
-
         }
         else if ((Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.S) || Input.GetKeyUp(KeyCode.D) || Input.GetKeyUp(KeyCode.W)))
         {
 
             anim.SetBool("Walk", false);
+            GetComponent<AudioSource>().Stop();
         }
         Vector3 moveinput = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
         Vector3 moveVelocity = moveinput.normalized * speed;

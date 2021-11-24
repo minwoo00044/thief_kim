@@ -1,12 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GunController : MonoBehaviour
 {
     public Transform weaponHold;
     public Gun startingGun;
     Gun equippedGun;
+    public Text txt;
     // Start is called before the first frame update
     void Start()
     {
@@ -27,7 +29,7 @@ public class GunController : MonoBehaviour
     {
         if(equippedGun != null)
         {
-            equippedGun.Shoot();
+            equippedGun.Shoot(txt);
         }
     }
 

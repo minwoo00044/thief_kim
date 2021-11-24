@@ -22,6 +22,7 @@ public class ChaseRange : MonoBehaviour
     {
         if (collision.transform.CompareTag("Player"))
         {
+            GetComponentInParent<AudioSource>().Play();
             transform.GetComponentInParent<Enemy>().isChasing = true;
         }
     }

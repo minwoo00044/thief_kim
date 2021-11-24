@@ -62,7 +62,7 @@ public class Enemy : LivingEntity
 
     void Update()
     {
-        if (hasTarget)
+        /*if (hasTarget)
         {
             if (Time.time > nextAttackTIme)
             {
@@ -76,7 +76,7 @@ public class Enemy : LivingEntity
 
             }
 
-        }
+        }*/
         if (!isChasing)
         {
             hasTarget = false;

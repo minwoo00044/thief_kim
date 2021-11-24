@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    float speed = 10;
+    public float speed = 10;
     float damage = 1;
     public LayerMask collisionMask;
-    float lifetime = 3;
+    public float lifetime = 3;
     float skinWidth = 0.1f;
 
     // Start is called before the first frame update
@@ -63,13 +63,17 @@ public class Projectile : MonoBehaviour
 
     void OnHitObject(Collider c)
     {
-        IDamageable damageableObject = c.GetComponent<IDamageable>();
-        if (damageableObject != null)
+        if(c.gameObject.layer== LayerMask.NameToLayer("Enemy"))
         {
-            damageableObject.TakeDamage(damage);
+            IDamageable damageableObject = c.GetComponent<IDamageable>();
+            if (damageableObject != null)
+            {
+                damageableObject.TakeDamage(damage);
+            }
+
+            GameObject.Destroy(gameObject);
         }
 
-        GameObject.Destroy(gameObject);
     }
 
 
